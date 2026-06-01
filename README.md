@@ -4,7 +4,9 @@ Une fenêtre flottante qui transcrit ta voix en texte. Tu parles, le texte appar
 
 Ça reste visible par-dessus toutes tes autres fenêtres. Un raccourci clavier (`Ctrl+Shift+Space`) l'ouvre et la ferme. C'est à peu près tout ce qu'il y a à savoir pour l'utiliser.
 
-La transcription passe par Whisper, le modèle de reconnaissance vocale d'OpenAI, hébergé chez Groq. Groq est rapide — le délai entre ta voix et le texte affiché est quasi imperceptible.
+La transcription passe par Whisper, le modèle de reconnaissance vocale d'OpenAI, hébergé chez Groq. L'audio est envoyé par tranches de 10 secondes — le texte s'affiche donc toutes les 10 secondes, pas mot par mot.
+
+> **Note :** l'app est conçue pour tourner sur Wayland. Le raccourci clavier global repose sur `evdev` via un daemon Python, ce qui le rend indépendant du compositeur. Sur X11 ça peut fonctionner, mais ce n'est pas l'environnement cible.
 
 ---
 

@@ -126,9 +126,7 @@ app.whenReady().then(() => {
   createTray()
   startSocketServer()
 
-  // Fallback: globalShortcut works on XWayland/X11, silently fails on pure Wayland
-  const registered = globalShortcut.register(TOGGLE_SHORTCUT, toggleWindow)
-  log.info(`[main] globalShortcut registered: ${registered} (use evdev daemon on Wayland)`)
+  // hotkey-daemon.py handles the shortcut via evdev — no globalShortcut needed
 
   app.on('activate', () => {
     if (!win) createWindow()

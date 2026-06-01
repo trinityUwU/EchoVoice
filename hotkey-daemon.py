@@ -8,18 +8,27 @@ import asyncio
 import socket
 import os
 import sys
+import time
 from evdev import InputDevice, ecodes, list_devices
 from loguru import logger
 
 SOCKET_PATH = '/tmp/echovoice.sock'
 HOTKEY = {ecodes.KEY_LEFTCTRL, ecodes.KEY_LEFTSHIFT, ecodes.KEY_SPACE}
 HOTKEY_ALT = {ecodes.KEY_RIGHTCTRL, ecodes.KEY_RIGHTSHIFT, ecodes.KEY_SPACE}
+DEBOUNCE_MS = 300
 
 logger.remove()
 logger.add(sys.stderr, format="<green>{time:HH:mm:ss}</green> {message}", level="INFO")
 
+_last_toggle_ts: float = 0.0
+
 
 def send_toggle() -> None:
+    global _last_toggle_ts
+    now = time.monotonic()
+    if (now - _last_toggle_ts) * 1000 < DEBOUNCE_MS:
+        return
+    _last_toggle_ts = now
     try:
         with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
             s.connect(SOCKET_PATH)
